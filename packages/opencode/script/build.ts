@@ -59,7 +59,7 @@ await Bun.build({
     autoloadTsconfig: true,
     autoloadPackageJson: true,
     target: name.replace(pkg.name, "bun") as any,
-    outfile: `dist/${name}/bin/opencodes`,
+    outfile: `dist/${name}/bin/opencode`,
     execArgv: [`--user-agent=opencode/${Script.version}`, "--use-system-ca", "--"],
   },
   files: {
@@ -79,7 +79,7 @@ await Bun.build({
 })
 
 // Smoke test: binary must run on this machine
-const binaryPath = `dist/${name}/bin/opencodes`
+const binaryPath = `dist/${name}/bin/opencode`
 console.log(`Running smoke test: ${binaryPath} --version`)
 try {
   const versionOutput = await $`${binaryPath} --version`.text()
