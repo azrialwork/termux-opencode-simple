@@ -143,6 +143,11 @@ if (!skipInstall) {
   await $`bun install --os="*" --cpu="*" @opentui/core@${pkg.dependencies["@opentui/core"]}`
   await $`bun install --os="*" --cpu="*" @parcel/watcher@${pkg.dependencies["@parcel/watcher"]}`
   await $`bun install --os="*" --cpu="*" @ff-labs/fff-bun@${pkg.dependencies["@ff-labs/fff-bun"]}`
+  // Termux: OpenTUI refuses platform "android" and the npm linux-arm64
+  // libopentui.so is glibc. Patch the resolver + swap in the bionic build.
+  if (process.platform === "android") {
+    await $`bash ../../script/patch-termux-tui.sh`
+  }
 }
 for (const item of targets) {
   const name = [
