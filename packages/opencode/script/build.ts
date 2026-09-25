@@ -115,7 +115,9 @@ const allTargets: {
 
 const targets = singleFlag
   ? allTargets.filter((item) => {
-      if (item.os !== process.platform || item.arch !== process.arch) {
+      // Termux reports platform "android"; treat it as linux for target matching
+      const platform = process.platform === "android" ? "linux" : process.platform
+      if (item.os !== platform || item.arch !== process.arch) {
         return false
       }
 
@@ -202,7 +204,7 @@ for (const item of targets) {
   })
 
   // Smoke test: only run if binary is for current platform
-  if (item.os === process.platform && item.arch === process.arch && !item.abi) {
+  if (item.os === (process.platform === "android" ? "linux" : process.platform) && item.arch === process.arch && !item.abi) {
     const binaryPath = `dist/${name}/bin/opencode`
     console.log(`Running smoke test: ${binaryPath} --version`)
     try {
